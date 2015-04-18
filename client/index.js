@@ -2,7 +2,7 @@
 
 'use strict';
 
-var root, characters, myKey, myCharacter, items;
+var root, users, myKey, myCharacter, battleships;
 // var move = 'assets/pickupCoin.wav';
 // var itemImgs = {health: 'url("/assets/health.png")',
 //                 weapon: 'url("/assets/weapon.png")',
@@ -15,19 +15,20 @@ $(document).ready(init);
 //
 function init(){
   root = new Firebase('https://batship.firebaseio.com/');
-  characters = root.child('characters');
-  items = root.child('items');
-  $('#create-user').click(createUser);
-  $('#login-user').click(loginUser);
-  $('#logout-user').click(logoutUser);
-  $('#start-user').click(startUser);
-  characters.on('child_added', characterAdded);
-  characters.on('child_changed', characterChanged);
-  items.on('child_added', itemAdded);
-  $('#create-character').click(createCharacter);
-  $(document).keydown(keyDown);
-  $sound = $('#sound');
-  startTimer();
+  users = root.child('users');
+  battleships = root.child('battleships');
+  hotspots = root.child('hotspots');
+  // $('#create-user').click(createUser);
+  // $('#login-user').click(loginUser);
+  // $('#logout-user').click(logoutUser);
+  // $('#start-user').click(startUser);
+  // users.on('child_added', characterAdded);
+  // users.on('child_changed', characterChanged);
+  // battleships.on('child_added', itemAdded);
+  // $('#create-character').click(createCharacter);
+  // $(document).keydown(keyDown);
+  // $sound = $('#sound');
+  // startTimer();
 }
 //
 // function itemAdded(snapshot){
@@ -44,16 +45,16 @@ function init(){
 // }
 //
 // function startTimer(){
-//   //setInterval(dropItems, 7000);
+//   //setInterval(dropbattleships, 7000);
 // }
 //
-// function dropItems(){
+// function dropbattleships(){
 //   var names = itemNames;
 //   var rnd = Math.floor(Math.random() * names.length);
 //   var rndx = Math.floor(Math.random() * 10);
 //   var rndy = Math.floor(Math.random() * 10);
 //   var name = names[rnd];
-//   items.push({
+//   battleships.push({
 //     name: name,
 //     x: rndx,
 //     y: rndy,
@@ -92,7 +93,7 @@ function init(){
 //       }
 //       y += 1;
 //   }
-//   characters.child(myKey).update({x:x, y:y});
+//   users.child(myKey).update({x:x, y:y});
 //   event.preventDefault();
 // }
 //
@@ -106,7 +107,7 @@ function init(){
 //   $td.attr('data-key', '');
 //   // $td.data('key', '');
 //   if (itemKey){
-//     items.child(itemKey).remove();
+//     battleships.child(itemKey).remove();
 //   }
 //   $td.addClass(character.handle);
 //   $td.css('background-image', 'url("'+character.avatar+'")');
@@ -117,7 +118,7 @@ function init(){
 //   var avatar = $('#avatar').val();
 //   var uid = root.getAuth().uid;
 //
-//   characters.push({
+//   users.push({
 //     handle: handle,
 //     avatar: avatar,
 //     uid: uid
@@ -136,13 +137,13 @@ function init(){
 //   }
 //
 //   var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
-//   $('#characters > tbody').append(tr);
+//   $('#users > tbody').append(tr);
 // }
 //
 // function logoutUser(){
 //   root.unauth();
 //   myKey = null;
-//   $('#characters > tbody > tr.active').removeClass('active');
+//   $('#users > tbody > tr.active').removeClass('active');
 // }
 //
 // function loginUser(){
@@ -156,7 +157,7 @@ function init(){
 //     if(error){
 //       console.log('Error logging in:', error);
 //     }else{
-//       redrawCharacters();
+//       redrawusers();
 //     }
 //   });
 // }
@@ -164,13 +165,13 @@ function init(){
 // function startUser(){
 //   var x = Math.floor(Math.random() * 10);
 //   var y = Math.floor(Math.random() * 10);
-//   characters.child(myKey).update({x:x, y:y});
+//   users.child(myKey).update({x:x, y:y});
 // }
 //
-// function redrawCharacters(){
-//   $('#characters > tbody').empty();
-//   characters.off('child_added',characterAdded);
-//   characters.on('child_added', characterAdded);
+// function redrawusers(){
+//   $('#users > tbody').empty();
+//   users.off('child_added',characterAdded);
+//   users.on('child_added', characterAdded);
 // }
 //
 // function createUser(){

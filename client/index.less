@@ -1,22 +1,45 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
 *{
-  padding: 5px;
-  margin: 5px;
+  font-family: 'Open Sans', sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
-thead tr th {
-  width: 30px;
-  height: 30px;
-  border: 1px dashed red;
+body{
+  background-color: gray;
+  background-image: url('/assets/airbender2.png');
+  background-repeat: no-repeat;
 }
 
-#characters tbody tr td {
-  width: 30px;
-  height: 30px;
-  border: 1px dashed red;
-  background-size: cover;
+h1{
+  color: #FFFFFF;
 }
 
-.active{
-  background-color: yellow;
+#characters{
+  float: left;
+  td{
+    border: 1px dashed #252525;
+    font-size: 11px;
+    img{
+      width: 50px;
+      height: 50px;
+    }
+  }
+  tr.active{
+    background-color: yellow;
+  }
+}
 
+#battlestation {
+  td {
+    width: 50px;
+    height: 50px;
+    board: 1px solid #252525;
+    background-color: #cccccc;
+    background-size: cover;
+  }
+  .myCurrentPosition{
+    background-size: cover;
+  }
 }

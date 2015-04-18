@@ -2,30 +2,45 @@ doctype html
 html
   head
     meta(charset='utf-8')      
-    title Zelda
+    title Battleship
     link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet', href=isProd ? '/index.min.css' : '/index.css')
     link(rel='shortcut icon', href='/favicon.ico')
   body
-    h1 Legend of Zelda
-    #user-creation
+    h1 Battleship
+    #signingUp
       input#email(type='email', placeholder='email')
       input#password(type='password', placeholder='password')
-      button#create-user Create User
-      button#login-user Login
-      button#logout-user Log out user
-    
-    #character-creation
+      button#create-user Sign Up
+      button#userExists Existing User
+    #signingIn
+      input#userEmail(type='email', placeholder='email')
+      input#userPassword(type='password', placeholder='password')
+      button#login-user Sign In
+    #creatingUser
       input#handle(type='text', placeholder='handle')
-      input#avatar(type='url', placeholder='avatar')
+      input#avatar(type='url', placeholder='url to avatar')
       button#create-character Create Character
+      button#logout-user Sign Out
+    #shipCreation
+      #firstRow
+        input#shipName
+        input#originX
+        input#originY
+      #secondRow
+        select#shipType
+        input#shipWidth
+        input#shipHeight
+      #thirdRow
+        button#createShip Create Ship
+    #arena
     
-    table#characters
-      thead
-        tr
-          th Handle
-          th Avatar
-      tbody
+      table#characters
+        thead
+          tr
+            th Handle
+            th Avatar
+        tbody
     
     script(src='/vendor/momentjs/min/moment.min.js')
     script(src='/vendor/jquery/dist/jquery.min.js')

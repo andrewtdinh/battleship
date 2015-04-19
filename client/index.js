@@ -7,13 +7,14 @@ var myFireSound = 'assets/pickupCoin.wav';
 var enemyFireSound = 'assets/pickupCoin.wav';
 var hitSound = 'assets/pickupCoin.wav';
 var $myFire, $enemyFire, $hitSound;
-// var itemImgs = {health: 'url("/assets/health.png")',
-//                 weapon: 'url("/assets/weapon.png")',
-//                 blackhole: 'url("/assets/blackhole.png")'
-// };
-// var itemNames = ['health', 'weapon', 'blackhole'];
+var shipTypes = ['scooter', 'razor', 'scorcher', 'crusher', 'weirder'];
+var shipImgs = {scooter: 'url("/assets/scooter.png")',
+                razor: 'url("/assets/razor.png")',
+                scorcher: 'url("/assets/scorcher.png")',
+                crusher: 'url("/assets/crusher.png")',
+                weirder: 'url("/assets/weirder.png")'
+};
 
-//
 $(document).ready(init);
 //
 function init(){
@@ -150,15 +151,38 @@ function characterAdded(snapshot){
     var tdAvatarImg = '<td><img src="'+character.avatar+'"></td>';
     $('#characters').find('tr').append(tdHandleName).append(tdAvatarImg);
     $('#characters').addClass('animated slideInLeft');
-
     $('#handleName').text(character.handle);
+    showShipCreateDiv();
   }
+}
 
+function showShipCreateDiv(){
+  var shipType = '<label>Ship Type <select id="shipType">';
+  var option;
+  shipTypes.forEach(function(type){
+    option = '<option>'+type+'</option>';
+    shipType += option;
+  });
+  shipType += '</label>';
+  var $shipType = $(shipType);
+  $('#shipCreation').append($shipType);
+  // var $inputHandle = $('<input id="handle" type="text" placeholder="handle">');
+  // var $inputAvatar = $('<input id="avatarInput" type="url" placeholder="url to avatar">');
+  // var $btnCreate = $('<button id="create-character">Create Character</button>');
+  // var $btnSignOut = $('<button id="logout-user">Sign Out</button>');
+}
 
+function createAndPlaceShip(){
+  createShip();
+  placeShip();
+}
 
+function createShip(){
 
-  // var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
-  // $('#users > tbody').append(tr);
+}
+
+function placeShip(){
+
 }
 
 function logoutUser(){
@@ -232,7 +256,7 @@ function loginUser(){
 function redrawusers(){
   $('#characters > tbody > tr').children().remove();
   users.on('child_added', characterAdded);
-  users.on('child_changed', characterChanged);
+  // users.on('child_changed', characterChanged);
 }
 
 function createUser(){

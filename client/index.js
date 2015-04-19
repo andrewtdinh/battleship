@@ -25,7 +25,7 @@ function init(){
   $('#creatingUser').on('click', '#logout-user',logoutUser);
   $('#creatingUser').on('click', '#create-character',createCharacter);
   // $('#start-user').click(startUser);
-  users.on('child_added', characterAdded);
+  // users.on('child_added', characterAdded);
   // users.on('child_changed', characterChanged);
   // battleships.on('child_added', itemAdded);
   // $(document).keydown(keyDown);
@@ -145,14 +145,17 @@ function characterAdded(snapshot){
     myKey = snapshot.key();   //send key value to global var
     myCharacter = character;
     // active = 'active';
-  }
-  $('#welcome').text('Welcome to Battle Galatica, ' +character.handle+ '!!');
-  var tdHandleName = '<td id="handleName">'+character.handle+'</td>';
-  var tdAvatarImg = '<td><img src="'+character.avatar+'"></td>';
-  $('#characters').find('tr').append(tdHandleName).append(tdAvatarImg);
-  $('#characters').addClass('animated slideInLeft');
+    $('#welcome').text('Welcome to Battle Galatica, ' +character.handle+ '!!');
+    var tdHandleName = '<td id="handleName">'+character.handle+'</td>';
+    var tdAvatarImg = '<td><img src="'+character.avatar+'"></td>';
+    $('#characters').find('tr').append(tdHandleName).append(tdAvatarImg);
+    $('#characters').addClass('animated slideInLeft');
 
-  $('#handleName').text(character.handle);
+    $('#handleName').text(character.handle);
+  }
+
+
+
 
   // var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
   // $('#users > tbody').append(tr);
@@ -161,6 +164,7 @@ function characterAdded(snapshot){
 function logoutUser(){
   root.unauth();
   myKey = null;
+  myCharacter = null;
   $('#users > tbody > tr.active').removeClass('active');
   $('#welcomeDiv > h4').removeClass('slideInLeft');
   $('#welcomeDiv > h4').addClass('animated slideOutRight');
@@ -172,6 +176,7 @@ function logoutUser(){
   $('#battlestation').addClass('animated slideOutRight');
   $('#characters').find('td').removeClass('slideInLeft');
   $('#characters').find('td').addClass('animated slideOutRight');
+
 }
 
 function hideAndWelcome(){
@@ -213,7 +218,7 @@ function loginUser(){
     else{
       hideAndWelcome();
       displayUserCreation();
-      // redrawusers();
+      redrawusers();
     }
   });
 }
@@ -224,12 +229,12 @@ function loginUser(){
 //   users.child(myKey).update({x:x, y:y});
 // }
 //
-// function redrawusers(){
-//   $('#users > tbody').empty();
-//   users.off('child_added',characterAdded);
-//   users.on('child_added', characterAdded);
-// }
-//
+function redrawusers(){
+  $('#characters > tbody > tr').children().remove();
+  users.on('child_added', characterAdded);
+  users.on('child_changed', characterChanged);
+}
+
 function createUser(){
   var email = $('#email').val();
   var password = $('#password').val();

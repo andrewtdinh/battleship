@@ -2,14 +2,17 @@
 
 'use strict';
 
-var root, users, myKey, myCharacter, battleships, hotspots, $about, $signUp;
-// var move = 'assets/pickupCoin.wav';
+var root, users, myKey, myCharacter, battleships, $about, $signUp;
+var myFireSound = 'assets/pickupCoin.wav';
+var enemyFireSound = 'assets/pickupCoin.wav';
+var hitSound = 'assets/pickupCoin.wav';
+var $myFire, $enemyFire, $hitSound;
 // var itemImgs = {health: 'url("/assets/health.png")',
 //                 weapon: 'url("/assets/weapon.png")',
 //                 blackhole: 'url("/assets/blackhole.png")'
 // };
 // var itemNames = ['health', 'weapon', 'blackhole'];
-// var $sound;
+
 //
 $(document).ready(init);
 //
@@ -17,15 +20,14 @@ function init(){
   root = new Firebase('https://batship.firebaseio.com/');
   users = root.child('users');
   battleships = root.child('battleships');
-  hotspots = root.child('hotspots');
   $('#create-user').click(createUser);
   $('#login-user').click(loginUser);
   $('#creatingUser').on('click', '#logout-user',logoutUser);
+  $('#creatingUser').on('click', '#create-character',createCharacter);
   // $('#start-user').click(startUser);
   // users.on('child_added', characterAdded);
   // users.on('child_changed', characterChanged);
   // battleships.on('child_added', itemAdded);
-  // $('#create-character').click(createCharacter);
   // $(document).keydown(keyDown);
   // $sound = $('#sound');
   // startTimer();
@@ -113,33 +115,34 @@ function init(){
 //   $td.css('background-image', 'url("'+character.avatar+'")');
 // }
 //
-// function createCharacter(){
-//   var handle = $('#handle').val();
-//   var avatar = $('#avatar').val();
-//   var uid = root.getAuth().uid;
-//
-//   users.push({
-//     handle: handle,
-//     avatar: avatar,
-//     uid: uid
-//   });
-// }
-//
-// function characterAdded(snapshot){
-//   var character = snapshot.val();
-//   var myUid = root.getAuth() ? root.getAuth().uid : '';
-//   var active = '';
-//
-//   if(myUid === character.uid){
-//     myKey = snapshot.key();   //send key value to global var
-//     myCharacter = character;
-//     active = 'active';
-//   }
-//
-//   var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
-//   $('#users > tbody').append(tr);
-// }
-//
+function createCharacter(){
+  var handle = $('#handle').val();
+  var avatar = $('#avatar').val();
+  var uid = root.getAuth().uid;
+
+  users.push({
+    handle: handle,
+    avatar: avatar,
+    uid: uid,
+    points: 5000
+  });
+}
+
+function characterAdded(snapshot){
+  var character = snapshot.val();
+  var myUid = root.getAuth() ? root.getAuth().uid : '';
+  var active = '';
+
+  if(myUid === character.uid){
+    myKey = snapshot.key();   //send key value to global var
+    myCharacter = character;
+    active = 'active';
+  }
+
+  var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
+  $('#users > tbody').append(tr);
+}
+
 function logoutUser(){
   root.unauth();
   myKey = null;

@@ -25,7 +25,7 @@ function init(){
   $('#creatingUser').on('click', '#logout-user',logoutUser);
   $('#creatingUser').on('click', '#create-character',createCharacter);
   // $('#start-user').click(startUser);
-  // users.on('child_added', characterAdded);
+  users.on('child_added', characterAdded);
   // users.on('child_changed', characterChanged);
   // battleships.on('child_added', itemAdded);
   // $(document).keydown(keyDown);
@@ -117,7 +117,7 @@ function init(){
 //
 function createCharacter(){
   var handle = $('#handle').val();
-  var avatar = $('#avatar').val();
+  var avatar = $('#avatarInput').val();
   var uid = root.getAuth().uid;
 
   users.push({
@@ -125,22 +125,37 @@ function createCharacter(){
     avatar: avatar,
     uid: uid,
     points: 5000
+  }, function(error){
+    if (error) {
+      alert('Error creating handle.  Please recheck handle and avatar url!');
+    }
+    else {
+      alert('Successfully added handle and avatar!');
+    }
   });
 }
 
 function characterAdded(snapshot){
   var character = snapshot.val();
+  console.log(snapshot.val());
   var myUid = root.getAuth() ? root.getAuth().uid : '';
-  var active = '';
+  // var active = '';
 
   if(myUid === character.uid){
     myKey = snapshot.key();   //send key value to global var
     myCharacter = character;
-    active = 'active';
+    // active = 'active';
   }
+  $('#welcome').text('Welcome to Battle Galatica, ' +character.handle+ '!!');
+  var tdHandleName = '<td id="handleName">'+character.handle+'</td>';
+  var tdAvatarImg = '<td><img src="'+character.avatar+'"></td>';
+  $('#characters').find('tr').append(tdHandleName).append(tdAvatarImg);
+  $('#characters').addClass('animated slideInLeft');
 
-  var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
-  $('#users > tbody').append(tr);
+  $('#handleName').text(character.handle);
+
+  // var tr = '<tr class="'+active+'"><td>'+character.handle+'</td><td><img src="'+character.avatar+'"></td></tr>';
+  // $('#users > tbody').append(tr);
 }
 
 function logoutUser(){
@@ -151,6 +166,12 @@ function logoutUser(){
   $('#welcomeDiv > h4').addClass('animated slideOutRight');
   $('#creatingUser').removeClass('slideInLeft');
   $('#creatingUser').addClass('animated slideOutRight');
+  $('#shipCreation').removeClass('slideInLeft');
+  $('#shipCreation').addClass('animated slideOutRight');
+  $('#battlestation').removeClass('slideInLeft');
+  $('#battlestation').addClass('animated slideOutRight');
+  $('#characters').find('td').removeClass('slideInLeft');
+  $('#characters').find('td').addClass('animated slideOutRight');
 }
 
 function hideAndWelcome(){

@@ -166,15 +166,20 @@ function showShipCreateDiv(){
   shipType += '</select></label>';
   var $shipType = $(shipType);
 
-  var $selectXCoord = $('<label>Starting X-Coordinate <input type="number" max="11" min="0" id="originX">');
-  var $selectYCoord = $('<label>Starting Y-Coordinate <input type="number" max="11" min="0" id="originY">');
-  var $selectOrientation = $('<label>Ship Type <select id="shipOrientation"><option>horizontal</option><option>vertical</option></select></label>');
+  var selectXCoord = '<label>Starting X-Coordinate <select id="originX">';
+  var selectYCoord = '<label>Starting Y-Coordinate <select id="originY">';
+  for (var i=0; i < 12; i++){
+    option = '<option>'+i+'</option>';
+    selectXCoord += option;
+    selectYCoord += option;
+  }
+  var $selectXCoord = $(selectXCoord + '</select></label>');
+  var $selectYCoord = $(selectYCoord + '</select></label>');
 
-  $('#shipCreation').append($shipType).append($selectXCoord).append($selectYCoord).append($selectOrientation);
-  // var $inputHandle = $('<input id="handle" type="text" placeholder="handle">');
-  // var $inputAvatar = $('<input id="avatarInput" type="url" placeholder="url to avatar">');
-  // var $btnCreate = $('<button id="create-character">Create Character</button>');
-  // var $btnSignOut = $('<button id="logout-user">Sign Out</button>');
+  var $selectOrientation = $('<label>Ship Type <select id="shipOrientation"><option>horizontal</option><option>vertical</option></select></label>');
+  var $btnCreateShip = $('<button id="createShip">Deploy Ship</button>');
+  $('#shipCreation').append($shipType).append($selectXCoord).append($selectYCoord).append($selectOrientation).append($btnCreateShip);
+  $('#shipCreation').addClass('animated slideInLeft');
 }
 
 function createAndPlaceShip(){

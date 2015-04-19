@@ -2,7 +2,7 @@
 
 'use strict';
 
-var root, users, myKey, myCharacter, battleships;
+var root, users, myKey, myCharacter, battleships, hotspots, $about, $signUp;
 // var move = 'assets/pickupCoin.wav';
 // var itemImgs = {health: 'url("/assets/health.png")',
 //                 weapon: 'url("/assets/weapon.png")',
@@ -18,9 +18,9 @@ function init(){
   users = root.child('users');
   battleships = root.child('battleships');
   hotspots = root.child('hotspots');
-  // $('#create-user').click(createUser);
-  // $('#login-user').click(loginUser);
-  // $('#logout-user').click(logoutUser);
+  $('#create-user').click(createUser);
+  $('#login-user').click(loginUser);
+  $('#creatingUser').on('click', '#logout-user',logoutUser);
   // $('#start-user').click(startUser);
   // users.on('child_added', characterAdded);
   // users.on('child_changed', characterChanged);
@@ -140,27 +140,59 @@ function init(){
 //   $('#users > tbody').append(tr);
 // }
 //
-// function logoutUser(){
-//   root.unauth();
-//   myKey = null;
-//   $('#users > tbody > tr.active').removeClass('active');
-// }
-//
-// function loginUser(){
-//   var email = $('#email').val();
-//   var password = $('#password').val();
-//
-//   root.authWithPassword({
-//     email    : email,
-//     password : password
-//   }, function(error){
-//     if(error){
-//       console.log('Error logging in:', error);
-//     }else{
-//       redrawusers();
-//     }
-//   });
-// }
+function logoutUser(){
+  root.unauth();
+  myKey = null;
+  $('#users > tbody > tr.active').removeClass('active');
+  $('#welcomeDiv > h4').removeClass('slideInLeft');
+  $('#welcomeDiv > h4').addClass('animated slideOutRight');
+  $('#creatingUser').removeClass('slideInLeft');
+  $('#creatingUser').addClass('animated slideOutRight');
+}
+
+function hideAndWelcome(){
+  $signUp = $('#signingUp');
+  $signUp.addClass('animated slideOutRight');
+  $signUp.remove();
+  $about = $('#welcomeDiv > h4');
+  $about.removeClass('slideInLeft');
+  $about.addClass('animated slideOutRight');
+  $about.remove();
+  var email = root.getAuth().password.email;
+  var emailName = email.slice(0, email.indexOf('@'));
+  var h4 = '<h4 id="welcome">Welcome to Battle Galatica, '+emailName+'!!</h4>';
+  $('#welcomeDiv').append(h4);
+  $('#welcomeDiv').addClass('animated slideInLeft');
+}
+
+function displayUserCreation(){
+  var $inputHandle = $('<input id="handle" type="text" placeholder="handle">');
+  var $inputAvatar = $('<input id="avatarInput" type="url" placeholder="url to avatar">');
+  var $btnCreate = $('<button id="create-character">Create Character</button>');
+  var $btnSignOut = $('<button id="logout-user">Sign Out</button>');
+  $('#creatingUser').append($inputHandle).append($inputAvatar).append($btnCreate).append($btnSignOut);
+  $('#creatingUser').removeClass('animated slideOutRight');
+  $('#creatingUser').addClass('animated slideInLeft');
+}
+
+function loginUser(){
+  var email = $('#email').val();
+  var password = $('#password').val();
+  root.authWithPassword({
+    email    : email,
+    password : password
+  }, function(error){
+    if(error){
+      console.log('Error logging in:', error);
+      alert('There is a problem with your username/password combination!!');
+    }
+    else{
+      hideAndWelcome();
+      displayUserCreation();
+      // redrawusers();
+    }
+  });
+}
 //
 // function startUser(){
 //   var x = Math.floor(Math.random() * 10);
@@ -174,16 +206,20 @@ function init(){
 //   users.on('child_added', characterAdded);
 // }
 //
-// function createUser(){
-//   var email = $('#email').val();
-//   var password = $('#password').val();
-//
-//   root.createUser({
-//     email    : email,
-//     password : password
-//   }, function(error){
-//     if(error){
-//       console.log('Error creating user:', error);
-//     }
-//   });
-// }
+function createUser(){
+  var email = $('#email').val();
+  var password = $('#password').val();
+
+  root.createUser({
+    email    : email,
+    password : password
+  }, function(error){
+    if(error){
+      console.log('Error creating user:', error);
+      alert('Either a user already exists or there is a problem with your username/password combination!!');
+    }
+    else {
+      loginUser();
+    }
+  });
+}

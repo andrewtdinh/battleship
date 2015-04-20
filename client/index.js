@@ -190,8 +190,8 @@ function createAndPlaceShip(){
 }
 
 function createShip(){
-  var startX = $('#originX').val();
-  var startY = $('#originY').val();
+  var startX = $('#originX').val() * 1;
+  var startY = $('#originY').val() * 1;
   var orientation = $('#shipOrientation').val();
   var shipType = $('#shipType').val();
   var xLength, yLength;
@@ -315,7 +315,49 @@ function createShip(){
 }
 
 function placeShip(shipType, orientation, startX, startY, xLength, yLength){
-  var $div = $('<div></div>');
+  var assetUrl;
+  switch(shipType){
+    case 'scooter':
+      assetUrl = 'url("/assets/scooter.png")';
+      break;
+    case 'razor':
+      assetUrl = 'url("/assets/razor.png")';
+      break;
+    case 'scorcher':
+      assetUrl = 'url("/assets/scorcher.png")';
+      break;
+    case 'crusher':
+      assetUrl = 'url("/assets/crusher.png")';
+      break;
+    case 'weirder':
+      assetUrl = 'url("/assets/weirder.png")';
+  }
+  var fromLeft = 1 + startX * 52;
+  var fromTop = 1 + startY * 52;
+  var $div = $('<div id="'+shipType+'"></div>');
+  $div.css('background-image', assetUrl);
+  $div.css('background-size', 'cover');
+  $div.css('position', 'absolute');
+  $div.css('top', fromTop +'px');
+  $div.css('left', fromLeft +'px');
+  $div.css('width', (1 + xLength * 51) + 'px');
+  $div.css('height', (1 + yLength * 51) + 'px');
+  if (orientation === 'vertical') {
+    $div.css('-webkit-transform', 'rotate(90deg)');
+    $div.css('-webkit-transform-origin', '0 0');
+    $div.css('-moz-transform', 'rotate(90deg)');
+    $div.css('-moz-transform-origin', '0 0');
+    $div.css('width', (1 + yLength * 51) + 'px');
+    $div.css('height', (1 + xLength * 51) + 'px');
+    $div.css('left', (50 + fromLeft) +'px');
+    if (shipType === 'crusher'){
+      $div.css('left', (100 + fromLeft) +'px');
+    }
+    if (shipType === 'weirder'){
+      $div.css('left', (150 + fromLeft) +'px');
+    }
+  }
+  $('#board').append($div);
 
 }
 

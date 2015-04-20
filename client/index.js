@@ -359,6 +359,20 @@ function placeShip(shipType, orientation, startX, startY, xLength, yLength){
   }
   $('#board').append($div);
 
+
+  var battleship = {
+    type: shipType,
+    uid: myCharacter.uid,
+    image: assetUrl,
+    fire: {},
+    hitPoint: 100,
+    missPoint: 5,
+    x: [],
+    y: [],
+    engaged: false,
+    turn: false
+  }
+
 }
 
 function logoutUser(){

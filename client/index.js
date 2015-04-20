@@ -3,9 +3,9 @@
 'use strict';
 
 var root, users, myKey, myCharacter, battleships, $about, $signUp, engaging;
-var myFireSound = 'assets/pickupCoin.wav';
-var enemyFireSound = 'assets/pickupCoin.wav';
-var hitSound = 'assets/pickupCoin.wav';
+var myFireSound = 'assets/myFire.wav';
+var enemyFireSound = 'assets/enemyFire.wav';
+var hitSound = 'assets/explosion.wav';
 var $myFire, $enemyFire, $hitSound;
 var shipTypes = ['scooter', 'razor', 'scorcher', 'crusher', 'weirder'];
 var shipImgs = {scooter: 'url("/assets/scooter.png")',

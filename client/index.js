@@ -201,14 +201,16 @@ function createShip(){
         if(startX + 2 <= 12){
           xLength = 2;
         } else {
-          xLength = -2;
+          xLength = 2;
+          startX -= 1;
         }
         yLength = 1;
       } else {    // orientation = vertical
         if(startY + 2 <= 12){
           yLength = 2;
         } else {
-          yLength = -2;
+          yLength = 2;
+          startY -= 1;
         }
         xLength = 1;
       }
@@ -218,14 +220,16 @@ function createShip(){
         if(startX + 3 <= 12){
           xLength = 3;
         } else {
-          xLength = -3;
+          xLength = 3;
+          startX -= 2;
         }
         yLength = 1;
       } else {  // orientation = vertical
         if(startY + 3 <= 12){
           yLength = 3;
         } else {
-          yLength = -3;
+          yLength = 3;
+          startY -= 2;
         }
         xLength = 1;
       }
@@ -235,14 +239,16 @@ function createShip(){
         if(startX + 4 <= 12){
           xLength = 4;
         } else {
-          xLength = -4;
+          xLength = 4;
+          startX -= 3;
         }
         yLength = 1;
       } else {  // orientation = vertical
         if(startY + 4 <= 12){
           yLength = 4;
         } else {
-          yLength = -4;
+          yLength = 4;
+          startY -= 3;
         }
         xLength = 1;
       }
@@ -252,23 +258,27 @@ function createShip(){
         if(startX + 4 <= 12){
           xLength = 4;
         } else {
-          xLength = -4;
+          xLength = 4;
+          startX -= 3;
         }
         if(startY + 2 <= 12){
           yLength = 2;
         } else {
-          yLength = -2;
+          yLength = 2;
+          startY -= 1;
         }
       } else {  // orientation = vertical
         if(startY + 4 <= 12){
           yLength = 4;
         } else {
-          yLength = -4;
+          yLength = 4;
+          startY -= 3;
         }
         if(startX + 2 <= 12){
           xLength = 2;
         } else {
-          xLength = -2;
+          xLength = 2;
+          startX -= 1;
         }
       }
       break;
@@ -277,23 +287,27 @@ function createShip(){
         if(startX + 3 <= 12){
           xLength = 3;
         } else {
-          xLength = -3;
+          xLength = 3;
+          startX -= 2;
         }
         if(startY + 3 <= 12){
           yLength = 3;
         } else {
-          yLength = -3;
+          yLength = 3;
+          startY -= 2;
         }
       } else {  // orientation = vertical
         if(startY + 3 <= 12){
           yLength = 3;
         } else {
-          yLength = -3;
+          yLength = 3;
+          startY -= 2;
         }
         if(startX + 3 <= 12){
           xLength = 3;
         } else {
-          xLength = -3;
+          xLength = 3;
+          startX -= 2;
         }
       }
   }
@@ -301,7 +315,8 @@ function createShip(){
 }
 
 function placeShip(shipType, orientation, startX, startY, xLength, yLength){
-  
+  var $div = $('<div></div>');
+
 }
 
 function logoutUser(){

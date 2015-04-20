@@ -2,7 +2,7 @@
 
 'use strict';
 
-var root, users, myKey, myCharacter, battleships, $about, $signUp;
+var root, users, myKey, myCharacter, battleships, $about, $signUp, engaging;
 var myFireSound = 'assets/pickupCoin.wav';
 var enemyFireSound = 'assets/pickupCoin.wav';
 var hitSound = 'assets/pickupCoin.wav';
@@ -25,6 +25,7 @@ function init(){
   $('#login-user').click(loginUser);
   $('#creatingUser').on('click', '#logout-user',logoutUser);
   $('#creatingUser').on('click', '#create-character',createCharacter);
+  $('#shipCreation').on('click', '#createShip', createAndPlaceShip);
   // $('#start-user').click(startUser);
   // users.on('child_added', characterAdded);
   // users.on('child_changed', characterChanged);
@@ -179,6 +180,7 @@ function showShipCreateDiv(){
   var $selectOrientation = $('<label>Ship Type <select id="shipOrientation"><option>horizontal</option><option>vertical</option></select></label>');
   var $btnCreateShip = $('<button id="createShip">Deploy Ship</button>');
   $('#shipCreation').append($shipType).append($selectXCoord).append($selectYCoord).append($selectOrientation).append($btnCreateShip);
+  $('#shipCreation').removeClass('slideOutRight');
   $('#shipCreation').addClass('animated slideInLeft');
 }
 
@@ -188,11 +190,118 @@ function createAndPlaceShip(){
 }
 
 function createShip(){
-
+  var startX = $('#originX').val();
+  var startY = $('#originY').val();
+  var orientation = $('#shipOrientation').val();
+  var shipType = $('#shipType').val();
+  var xLength, yLength;
+  switch(shipType){
+    case 'scooter':
+      if (orientation === 'horizontal'){
+        if(startX + 2 <= 12){
+          xLength = 2;
+        } else {
+          xLength = -2;
+        }
+        yLength = 1;
+      } else {    // orientation = vertical
+        if(startY + 2 <= 12){
+          yLength = 2;
+        } else {
+          yLength = -2;
+        }
+        xLength = 1;
+      }
+      break;
+    case 'razor':
+      if (orientation === 'horizontal'){
+        if(startX + 3 <= 12){
+          xLength = 3;
+        } else {
+          xLength = -3;
+        }
+        yLength = 1;
+      } else {  // orientation = vertical
+        if(startY + 3 <= 12){
+          yLength = 3;
+        } else {
+          yLength = -3;
+        }
+        xLength = 1;
+      }
+      break;
+    case 'scorcher':
+      if (orientation === 'horizontal'){
+        if(startX + 4 <= 12){
+          xLength = 4;
+        } else {
+          xLength = -4;
+        }
+        yLength = 1;
+      } else {  // orientation = vertical
+        if(startY + 4 <= 12){
+          yLength = 4;
+        } else {
+          yLength = -4;
+        }
+        xLength = 1;
+      }
+      break;
+    case 'crusher':
+      if (orientation === 'horizontal'){
+        if(startX + 4 <= 12){
+          xLength = 4;
+        } else {
+          xLength = -4;
+        }
+        if(startY + 2 <= 12){
+          yLength = 2;
+        } else {
+          yLength = -2;
+        }
+      } else {  // orientation = vertical
+        if(startY + 4 <= 12){
+          yLength = 4;
+        } else {
+          yLength = -4;
+        }
+        if(startX + 2 <= 12){
+          xLength = 2;
+        } else {
+          xLength = -2;
+        }
+      }
+      break;
+    case 'weirder':
+      if (orientation === 'horizontal'){
+        if(startX + 3 <= 12){
+          xLength = 3;
+        } else {
+          xLength = -3;
+        }
+        if(startY + 3 <= 12){
+          yLength = 3;
+        } else {
+          yLength = -3;
+        }
+      } else {  // orientation = vertical
+        if(startY + 3 <= 12){
+          yLength = 3;
+        } else {
+          yLength = -3;
+        }
+        if(startX + 3 <= 12){
+          xLength = 3;
+        } else {
+          xLength = -3;
+        }
+      }
+  }
+  placeShip(shipType, orientation, startX, startY, xLength, yLength);
 }
 
-function placeShip(){
-
+function placeShip(shipType, orientation, startX, startY, xLength, yLength){
+  
 }
 
 function logoutUser(){

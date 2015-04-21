@@ -2,7 +2,7 @@
 
 'use strict';
 
-var root, users, myKey, myCharacter, battleships, $about, $signUp, engaging;
+var root, users, myKey, myCharacter, hotspots, battleships, $about, $signUp, engaging, myShips;
 var myFireSound = 'assets/myFire.wav';
 var enemyFireSound = 'assets/enemyFire.wav';
 var hitSound = 'assets/explosion.wav';
@@ -20,19 +20,22 @@ $(document).ready(init);
 function init(){
   root = new Firebase('https://batship.firebaseio.com/');
   users = root.child('users');
+  hotspots = root.child('hotspots');
   battleships = root.child('battleships');
   $('#create-user').click(createUser);
   $('#login-user').click(loginUser);
   $('#creatingUser').on('click', '#logout-user',logoutUser);
   $('#creatingUser').on('click', '#create-character',createCharacter);
-  $('#shipCreation').on('click', '#createShip', createAndPlaceShip);
+  $('#shipCreation').on('click', '#createShip', createShip);
   // $('#start-user').click(startUser);
   // users.on('child_added', characterAdded);
   // users.on('child_changed', characterChanged);
   // battleships.on('child_added', itemAdded);
   // $(document).keydown(keyDown);
-  // $sound = $('#sound');
   // startTimer();
+  $myFire = $('#myFire');
+  $enemyFire = $('#enemyFire');
+  $hitSound = $('#hitSound');
 }
 //
 // function itemAdded(snapshot){
@@ -65,41 +68,7 @@ function init(){
 //     img: itemImgs[name]
 //   });
 // }
-//
-//
-// function keyDown(event){
-//   $sound.attr('src', move);
-//   $sound[0].play();
-//   var x = $('.'+myCharacter.handle).data('x');
-//   var y = $('.'+myCharacter.handle).data('y');
-//   switch (event.keyCode) {
-//     case 37:
-//       if (x === 0){
-//         break;
-//       }
-//       x -= 1;
-//       break;
-//     case 38:
-//       if (y === 0){
-//         break;
-//       }
-//       y -= 1;
-//       break;
-//     case 39:
-//       if (x === 9){
-//         break;
-//       }
-//       x += 1;
-//       break;
-//     case 40:
-//       if (y === 9){
-//         break;
-//       }
-//       y += 1;
-//   }
-//   users.child(myKey).update({x:x, y:y});
-//   event.preventDefault();
-// }
+
 //
 // function characterChanged(snapshot){
 //   var character = snapshot.val();
@@ -182,11 +151,6 @@ function showShipCreateDiv(){
   $('#shipCreation').append($shipType).append($selectXCoord).append($selectYCoord).append($selectOrientation).append($btnCreateShip);
   $('#shipCreation').removeClass('slideOutRight');
   $('#shipCreation').addClass('animated slideInLeft');
-}
-
-function createAndPlaceShip(){
-  createShip();
-  placeShip();
 }
 
 function createShip(){
@@ -311,10 +275,16 @@ function createShip(){
         }
       }
   }
+  var xArray = generateArray(startX, xLength);
+  var yArray = generateArray(startY, yLength);
+  if (!isAreaEmpty(xArray, yArray, shipType)){
+    alert('Part or all of that area is occupied by another one of ship!');
+    return;
+  }
   placeShip(shipType, orientation, startX, startY, xLength, yLength);
 }
 
-function placeShip(shipType, orientation, startX, startY, xLength, yLength){
+function getAssetUrl(shipType){
   var assetUrl;
   switch(shipType){
     case 'scooter':
@@ -332,6 +302,11 @@ function placeShip(shipType, orientation, startX, startY, xLength, yLength){
     case 'weirder':
       assetUrl = 'url("/assets/weirder.png")';
   }
+  return assetUrl;
+}
+
+function placeShip(shipType, orientation, startX, startY, xLength, yLength){
+  var assetUrl = getAssetUrl(shipType);
   var fromLeft = 1 + startX * 52;
   var fromTop = 1 + startY * 52;
   var $div = $('<div id="'+shipType+'"></div>');
@@ -359,20 +334,47 @@ function placeShip(shipType, orientation, startX, startY, xLength, yLength){
   }
   $('#board').append($div);
 
+  var xArray = generateArray(startX, xLength);
+  var yArray = generateArray(startY, yLength);
+  addClasses(xArray, yArray, shipType);
 
   var battleship = {
     type: shipType,
     uid: myCharacter.uid,
     image: assetUrl,
-    fire: {},
-    hitPoint: 100,
-    missPoint: 5,
     x: [],
-    y: [],
-    engaged: false,
-    turn: false
-  }
+    y: []
+  };
+  battleships.push(battleship);
+}
 
+function isAreaEmpty(xArray, yArray, shipType){
+  var $td;
+  var isEmpty = true;
+  xArray.forEach(function(x){
+    yArray.forEach(function(y){
+      $td = $('#board td[data-y="'+y+'"][data-x="'+x+'"]');
+      if ($td.hasClass('ship')){isEmpty = false;}
+      // });
+    });
+  });
+  return isEmpty;
+}
+
+function addClasses (xArray, yArray, shipType){
+  xArray.forEach(function(x){
+    yArray.forEach(function(y){
+      $('#board td[data-y="'+y+'"][data-x="'+x+'"]').addClass(shipType).addClass('ship');
+    });
+  });
+}
+
+function generateArray(startNum, arrayLength){
+  var array = [];
+  for (var i = 0; i < arrayLength; i++){
+    array.push(startNum + i);
+  }
+  return array;
 }
 
 function logoutUser(){
